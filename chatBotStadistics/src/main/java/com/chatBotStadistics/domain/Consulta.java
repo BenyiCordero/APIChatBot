@@ -21,4 +21,7 @@ public class Consulta {
     @Column(name = "tema_id")
     private Integer tema_id;
     private String mensaje;
+
+
+
 }
