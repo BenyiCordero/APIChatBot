@@ -1,5 +1,7 @@
 package com.chatBotStadistics.service;
 
+import com.chatBotStadistics.dto.SubtemaEstadisticaDTO;
+import com.chatBotStadistics.dto.TemaEstadisticaDTO;
 import com.chatBotStadistics.repository.ConsultaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,5 +70,58 @@ public class ConsultaServiceImpl implements ConsultaService {
     @Override
     public Long countConsultas() {
         return consultaRepository.countConsultas();
+    }
+
+    @Override
+    public Long countConsultas(Integer year, Integer month) {
+        return consultaRepository.countConsultasF(year, month);
+    }
+
+    @Override
+    public Map<String, Double> getEstadisticasPorSubtema(Integer year, Integer month) {
+        List<SubtemaEstadisticaDTO> resultados = consultaRepository.countConsultasBySubtemaDTO(year, month);
+
+        if (resultados.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        long totalConsultas = resultados.stream()
+                .mapToLong(SubtemaEstadisticaDTO::count)
+                .sum();
+
+        if (totalConsultas == 0) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Double> estadisticas = new HashMap<>();
+        for (SubtemaEstadisticaDTO resultado : resultados) {
+            double porcentaje = (double) resultado.count() / totalConsultas * 100;
+            estadisticas.put(resultado.nombreSubtema(), porcentaje);
+        }
+        return estadisticas;
+    }
+
+    @Override
+    public Map<String, Double> getEstadisticasPorTema(Integer year, Integer month) {
+        List<TemaEstadisticaDTO> resultados = consultaRepository.countConsultasByTemaDTO(year,month);
+
+        if (resultados.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        long totalConsultas = resultados.stream()
+                .mapToLong(TemaEstadisticaDTO::count)
+                .sum();
+
+        if (totalConsultas == 0) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Double> estadisticas = new HashMap<>();
+        for (TemaEstadisticaDTO resultado : resultados) {
+            double porcentaje = (double) resultado.count() / totalConsultas * 100;
+            estadisticas.put(resultado.nombreTema(), porcentaje);
+        }
+        return estadisticas;
     }
 }

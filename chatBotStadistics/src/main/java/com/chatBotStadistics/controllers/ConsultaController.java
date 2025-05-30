@@ -4,6 +4,7 @@ import com.chatBotStadistics.service.ConsultaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -31,6 +32,32 @@ public class ConsultaController {
     @GetMapping
     public Long obtenerTotalConsultas() {
         return consultaService.countConsultas();
+    }
+
+    @GetMapping ("/filtrado")
+    public Long obtenerTotalConsultas(
+            @RequestParam(required = true) Integer year,
+            @RequestParam(required = true) Integer month
+    ) {
+        return consultaService.countConsultas(year, month);
+    }
+
+    @GetMapping("/por-subtema/filtrado")
+    public Map<String, Double> obtenerEstadisticasPorSubtema(
+            @RequestParam(required = true) Integer year,
+            @RequestParam(required = true) Integer month) {
+        Map<String, Double> result = consultaService.getEstadisticasPorSubtema(year, month);
+        System.out.println("Controller Result: " + result); // Debugging
+        return result;
+    }
+
+    @GetMapping("/por-tema/filtrado")
+    public Map<String, Double> obtenerEstadisticasPorTema(
+            @RequestParam(required = true) Integer year,
+            @RequestParam(required = true) Integer month) {
+        Map<String, Double> result = consultaService.getEstadisticasPorTema(year, month);
+        System.out.println("Controller Result: " + result); // Debugging
+        return result;
     }
 
 }

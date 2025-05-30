@@ -9,7 +9,7 @@ import lombok.Data;
 public class Subtema {
 
     @Id
-    private Long id;
+    private Integer id;
 
     private String nombre;
 

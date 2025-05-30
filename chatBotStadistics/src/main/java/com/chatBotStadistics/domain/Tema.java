@@ -11,7 +11,7 @@ import lombok.Data;
 public class Tema {
 
     @Id
-    private Long id;
+    private Integer id;
     private String nombre;
 
 }
