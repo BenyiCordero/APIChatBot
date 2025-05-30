@@ -19,26 +19,22 @@ public class ConsultaServiceImpl implements ConsultaService {
     public Map<String, Double> getEstadisticasPorSubtema() {
         List<Object[]> resultados = consultaRepository.countConsultasBySubtema();
 
-        // Verificar tipos
-        System.out.println("Resultados: " + resultados);
-
         if (resultados.isEmpty()) {
             return Collections.emptyMap();
         }
 
         long totalConsultas = resultados.stream()
-                .mapToLong(row -> ((Number) row[1]).longValue()) // Convertir de forma segura
+                .mapToLong(row -> ((Number) row[2]).longValue())
                 .sum();
 
         Map<String, Double> estadisticas = new HashMap<>();
 
         for (Object[] resultado : resultados) {
-            // Manejar tipos genéricos
-            Long subtemaId = ((Number) resultado[0]).longValue(); // Convertir a Long de forma segura
-            Long count = ((Number) resultado[1]).longValue();
+            String nombreSubtema = (String) resultado[1];
+            Long count = ((Number) resultado[2]).longValue();
 
             double porcentaje = (double) count / totalConsultas * 100;
-            estadisticas.put("Subtema " + subtemaId, porcentaje);
+            estadisticas.put(nombreSubtema, porcentaje);
         }
 
         return estadisticas;
@@ -48,26 +44,22 @@ public class ConsultaServiceImpl implements ConsultaService {
     public Map<String, Double> getEstadisticasPorTema() {
         List<Object[]> resultados = consultaRepository.countConsultasByTema();
 
-        // Verificar tipos
-        System.out.println("Resultados: " + resultados);
-
         if (resultados.isEmpty()) {
             return Collections.emptyMap();
         }
 
         long totalConsultas = resultados.stream()
-                .mapToLong(row -> ((Number) row[1]).longValue()) // Convertir de forma segura
+                .mapToLong(row -> ((Number) row[2]).longValue())
                 .sum();
 
         Map<String, Double> estadisticas = new HashMap<>();
 
         for (Object[] resultado : resultados) {
-            // Manejar tipos genéricos
-            Long subtemaId = ((Number) resultado[0]).longValue(); // Convertir a Long de forma segura
-            Long count = ((Number) resultado[1]).longValue();
+            String nombreTema = (String) resultado[1];
+            Long count = ((Number) resultado[2]).longValue();
 
             double porcentaje = (double) count / totalConsultas * 100;
-            estadisticas.put("Tema " + subtemaId, porcentaje);
+            estadisticas.put(nombreTema, porcentaje);
         }
 
         return estadisticas;

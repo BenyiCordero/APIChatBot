@@ -11,15 +11,23 @@ import java.util.List;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
 
-    @Query("SELECT c.subtema_id AS subtemaId, COUNT(c) AS count " +
-            "FROM Consulta c GROUP BY c.subtema_id")
+     // Contar consultas por subtema (id y nombre)
+    @Query("SELECT s.id, s.nombre, COUNT(c) " +
+            "FROM Consulta c, Subtema s " +
+            "WHERE c.subtema_id = s.id " +
+            "GROUP BY s.id, s.nombre")
     List<Object[]> countConsultasBySubtema();
 
-    @Query("SELECT c.tema_id AS temaId, COUNT(c) AS count " +
-            "FROM Consulta c GROUP BY c.tema_id")
+    // Contar consultas por tema (id y nombre)
+    @Query("SELECT t.id, t.nombre, COUNT(c) " +
+            "FROM Consulta c, Tema t " +
+            "WHERE c.tema_id = t.id " +
+            "GROUP BY t.id, t.nombre")
     List<Object[]> countConsultasByTema();
 
+    // Contar total de consultas
     @Query("SELECT COUNT(c) FROM Consulta c")
     Long countConsultas();
+
 
 }
