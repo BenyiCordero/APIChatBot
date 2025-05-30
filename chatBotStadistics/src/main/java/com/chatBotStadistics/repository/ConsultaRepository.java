@@ -1,15 +1,17 @@
 package com.chatBotStadistics.repository;
 
 import com.chatBotStadistics.domain.Consulta;
-import jakarta.transaction.Transactional;
+import com.chatBotStadistics.dto.SubtemaEstadisticaDTO;
+import com.chatBotStadistics.dto.TemaEstadisticaDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
+public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
 
      // Contar consultas por subtema (id y nombre)
     @Query("SELECT s.id, s.nombre, COUNT(c) " +
@@ -29,5 +31,29 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     @Query("SELECT COUNT(c) FROM Consulta c")
     Long countConsultas();
 
+    @Query("SELECT new com.chatBotStadistics.dto.SubtemaEstadisticaDTO(s.nombre, COUNT(c)) " +
+            "FROM Consulta c, Subtema s " +
+            "WHERE s.id = c.subtema_id " +
+            "AND (:year IS NULL OR c.year = :year) " +
+            "AND (:month IS NULL OR c.month = :month) " +
+            "GROUP BY s.nombre")
+    List<SubtemaEstadisticaDTO> countConsultasBySubtemaDTO(@Param("year") Integer year,
+                                                           @Param("month") Integer month);
+
+    @Query("SELECT new com.chatBotStadistics.dto.TemaEstadisticaDTO(t.nombre, COUNT(c)) " +
+            "FROM Consulta c, Tema t " +
+            "WHERE t.id = c.tema_id " +
+            "AND (:year IS NULL OR c.year = :year) " +
+            "AND (:month IS NULL OR c.month = :month) " +
+            "GROUP BY t.nombre")
+    List<TemaEstadisticaDTO> countConsultasByTemaDTO(@Param("year") Integer year,
+                                                     @Param("month") Integer month);
+
+    @Query("SELECT COUNT(c) " +
+            "FROM Consulta c " +
+            "WHERE year IS NULL OR c.year = :year " +
+            "AND (:month IS NULL OR c.month = :month)")
+    Long countConsultasF(@Param("year") Integer year,
+                         @Param("month") Integer month);
 
 }
