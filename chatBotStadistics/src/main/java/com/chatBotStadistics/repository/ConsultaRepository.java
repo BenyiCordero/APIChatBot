@@ -56,4 +56,13 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
     Long countConsultasF(@Param("year") Integer year,
                          @Param("month") Integer month);
 
+    @Query("SELECT COUNT (DISTINCT c.usuario_id) " +
+            "FROM Consulta c " + // Añadí un espacio aquí
+            "WHERE (:year IS NULL OR c.year = :year) " +
+            "AND (:month IS NULL OR c.month = :month) " +
+            "AND (:week IS NULL OR c.week = :week)")
+    Long countUsuariosConsultasF(@Param("year") Integer year,
+                                 @Param("month") Integer month,
+                                 @Param("week") Integer week);
+
 }
