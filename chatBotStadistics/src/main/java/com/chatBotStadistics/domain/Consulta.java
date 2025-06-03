@@ -20,6 +20,8 @@ public class Consulta {
     private Integer subtema_id;
     @Column(name = "tema_id")
     private Integer tema_id;
+    @Column(name = "usuario_id")
+    private Integer usuario_id;
     @Column(name = "mensaje")
     private String mensaje;
     @Column(name = "day")
@@ -28,5 +30,7 @@ public class Consulta {
     private Integer month;
     @Column(name = "year")
     private Integer year;
+    @Column(name = "week")
+    private Integer week;
 
 }

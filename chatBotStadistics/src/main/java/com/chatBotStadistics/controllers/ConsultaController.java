@@ -41,6 +41,13 @@ public class ConsultaController {
     ) {
         return consultaService.countConsultas(year, month);
     }
+    @GetMapping ("/por-year-month-week/filtrado")
+    public Long obtenerEstadisticasPorYearMonthWeek(
+            @RequestParam(required = true) Integer year,
+            @RequestParam(required = true) Integer month,
+            @RequestParam(required = true) Integer week) {
+        return consultaService.countConsultasPorYearMonthWeek(year, month, week);
+    }
 
     @GetMapping("/por-subtema/filtrado")
     public Map<String, Double> obtenerEstadisticasPorSubtema(

@@ -78,6 +78,11 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
+    public Long countConsultasPorYearMonthWeek(Integer year, Integer month, Integer week) {
+        return consultaRepository.countUsuariosConsultasF(year, month, week);
+    }
+
+    @Override
     public Map<String, Double> getEstadisticasPorSubtema(Integer year, Integer month) {
         List<SubtemaEstadisticaDTO> resultados = consultaRepository.countConsultasBySubtemaDTO(year, month);
 
