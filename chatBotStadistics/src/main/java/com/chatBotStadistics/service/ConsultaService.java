@@ -13,6 +13,7 @@ public interface ConsultaService {
     Map<String, Double> getEstadisticasPorSubtema(Integer year, Integer month);
     Long countConsultas();
     Long countConsultas(Integer year, Integer month);
+    Long countConsultasPorYearMonthWeek(Integer year, Integer month, Integer week);
 
 
 }
