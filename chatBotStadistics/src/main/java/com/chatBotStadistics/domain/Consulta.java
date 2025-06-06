@@ -30,11 +30,11 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Basic
-    @Column(name = "subtema_id")
+    @Column(name = "Subtema_id")
     private Integer subtema_id;
-    @Column(name = "tema_id")
+    @Column(name = "Tema_id")
     private Integer tema_id;
-    @Column(name = "usuario_id")
+    @Column(name = "Usuario_id")
     private Integer usuario_id;
     @Column(name = "mensaje")
     private String mensaje;
