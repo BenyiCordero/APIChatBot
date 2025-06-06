@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tokens")
 public final class Token {
 
     @Id

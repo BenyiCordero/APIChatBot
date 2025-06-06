@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "prompts")
 public class Prompt {
 
     @Id
