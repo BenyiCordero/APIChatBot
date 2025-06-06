@@ -9,6 +9,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controller that handles the administration of users in the application.
+ * This class provides endpoints to interact with user data.
+ *
+ * The controller is annotated with {@code @RestController} and maps requests
+ * to the base URI "/usuarios" using {@code @RequestMapping}.
+ *
+ * It uses the {@code AdminUserRepository} to fetch user data and transform it
+ * into a response format defined by {@code AdminUserResponse}.
+ *
+ * Dependencies are injected through the constructor using the {@code @RequiredArgsConstructor} annotation.
+ */
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor

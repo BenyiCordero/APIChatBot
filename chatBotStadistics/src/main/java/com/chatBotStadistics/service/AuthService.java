@@ -7,6 +7,14 @@ import com.chatBotStadistics.dto.TokenResponse;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service interface for managing user authentication and token-related operations.
+ *
+ * This interface defines methods for user registration, authentication,
+ * and handling of JSON Web Tokens (JWT) such as saving, revoking, and refreshing tokens.
+ * It serves as the contract for implementing authentication-related functionality
+ * in the application.
+ */
 @Service
 public interface AuthService {
 

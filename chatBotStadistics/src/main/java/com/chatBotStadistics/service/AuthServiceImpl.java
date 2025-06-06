@@ -17,6 +17,35 @@ import org.springframework.security.core.AuthenticationException;
 
 import java.util.List;
 
+/**
+ * Implementation of the AuthService interface for managing user authentication
+ * and token-related operations in the system.
+ *
+ * This class provides functionalities for:
+ * - Registering a new admin user with username, email, and password.
+ * - Authenticating existing users and generating access and refresh tokens upon successful login.
+ * - Saving authentication tokens to the database.
+ * - Revoking all active tokens associated with a specific user.
+ * - Refreshing authentication tokens by validating and replacing expired tokens with new ones.
+ *
+ * Dependencies:
+ * - AdminUserRepository: Manages AdminUser entities and provides database interaction for user-related operations.
+ * - TokenRepository: Manages Token entities and handles token-related database interactions.
+ * - PasswordEncoder: Encodes user passwords before saving them in the database.
+ * - JwtService: Provides utilities for generating and validating JSON Web Tokens (JWT).
+ * - AuthenticationManager: Handles the authentication of user credentials during login.
+ *
+ * Methods:
+ * - register(): Registers a new admin user and generates JWT tokens for authentication.
+ * - authenticate(): Authenticates a user with their credentials and issues authentication tokens.
+ * - saveUserToken(): Saves or persists a token entity for a specific user in the database.
+ * - revokeAllUserTokens(): Revokes all active tokens associated with a user, marking them as expired and invalid.
+ * - refreshToken(): Refreshes the user's authentication tokens by validating the refresh token
+ *   and issuing a new access token.
+ *
+ * This class is annotated with @Service, making it a Spring-managed service component
+ * that can be injected into other components where authentication-related operations are required.
+ */
 @Service
 public class AuthServiceImpl implements AuthService {
 

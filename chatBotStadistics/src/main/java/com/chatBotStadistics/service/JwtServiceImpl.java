@@ -11,6 +11,26 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Service implementation for managing JSON Web Tokens (JWT) related operations.
+ *
+ * This class provides functionality for generating, validating, and extracting information
+ * from JWTs. It also handles the creation of tokens with custom expiration times,
+ * as well as methods to check token validity and expiration.
+ *
+ * The implementation relies on a secret key and expiration times configured as properties
+ * in the application to ensure security and token lifecycle management.
+ *
+ * Methods:
+ * - extractUsername: Extracts the username (subject) from a JWT.
+ * - generateToken: Generates an access token for a given AdminUser.
+ * - generateRefreshToken: Generates a refresh token for a given AdminUser.
+ * - buildToken: Constructs a JWT for a given AdminUser with a specified expiration time.
+ * - isTokenValid: Validates a token by verifying the username and expiration status.
+ * - isTokenExpired: Checks if a token has expired based on the expiration claim.
+ * - extractExpiration: Retrieves the expiration date from a JWT.
+ * - getSignInKey: Provides the signing key derived from the configured secret key.
+ */
 @Service
 public class JwtServiceImpl implements JwtService {
 
