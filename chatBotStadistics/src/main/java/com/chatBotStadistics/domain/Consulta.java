@@ -24,7 +24,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "consultas")
 public class Consulta {
 
     @Id
