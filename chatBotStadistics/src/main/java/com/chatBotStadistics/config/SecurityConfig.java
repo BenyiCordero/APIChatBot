@@ -26,6 +26,33 @@ import java.util.List;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
+/**
+ * SecurityConfig defines the security configuration for the application using Spring Security.
+ * It configures authentication, authorization, CORS, CSRF, and session management,
+ * along with the integration of JWT-based authentication.
+ *
+ * This class relies on a combination of Spring Security's features and custom implementations
+ * to enforce secure access to application endpoints. It integrates:
+ * - AuthenticationProvider: Handles user authentication by delegating to a configured provider.
+ * - JwtAuthenticationFilter: Intercepts requests to validate JWT tokens and set authentication contexts.
+ * - TokenRepository: Manages token states such as expiration and revocation.
+ *
+ * Key features:
+ * - Disables CSRF protection as it uses JWT for authentication.
+ * - Configures CORS to allow requests from specified origins, methods, headers, and credentials.
+ * - Sets up authorization rules:
+ *   - Public access to endpoints matching "/auth/**".
+ *   - Authentication required for all other endpoints.
+ * - Configures stateless session management to handle JWT-based authentication.
+ * - Adds a logout mechanism:
+ *   - Expires and revokes the user's token upon logout.
+ *   - Clears security context after successful logout.
+ *
+ * Components:
+ * - `securityFilterChain`: Configures the HTTP security features, such as CORS, CSRF, authorization rules,
+ *   and JWT filter integration.
+ * - `logout`: Handles token expiration and revocation tasks during logout, ensuring tokens can no longer be used.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
