@@ -10,6 +10,26 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The AdminUserService class is a service layer component responsible for
+ * handling the business logic related to AdminUser entities.
+ *
+ * It implements the Spring Security UserDetailsService interface to manage
+ * authentication by loading user-specific data.
+ *
+ * Core Responsibilities:
+ * - Fetch AdminUser entities by their email address using `AdminUserRepository`.
+ * - Provide user details necessary for authentication via Spring Security.
+ *
+ * Dependencies:
+ * - AdminUserRepository: Used to interact with the database and fetch AdminUser entities.
+ *
+ * Primary Methods:
+ * - findUserByEmail: Retrieves an AdminUser entity with the specified email
+ *   address, if one exists.
+ * - loadUserByUsername: Implements the Spring Security `UserDetailsService`
+ *   interface method to load user-specific data needed for authentication.
+ */
 @Service
 @RequiredArgsConstructor
 public class AdminUserService implements UserDetailsService {

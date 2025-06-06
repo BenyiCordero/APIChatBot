@@ -4,6 +4,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
+/**
+ * Service interface for managing statistical data and counts related to "consultas."
+ *
+ * This interface defines methods for obtaining statistics and counts categorized
+ * by themes, subthemes, and temporal aspects such as year, month, and week.
+ * It serves as the contract for implementing statistical functionality
+ * in the application.
+ */
 @Service
 public interface ConsultaService {
 

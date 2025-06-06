@@ -9,6 +9,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for handling authentication-related operations.
+ *
+ * This class contains endpoints to allow users to register, log in, and refresh authentication tokens.
+ * The controller is annotated with {@code @RestController} to indicate that it is a RESTful web service
+ * and maps requests to the base URI "/auth" using {@code @RequestMapping}.
+ *
+ * Dependencies are injected into this controller using the {@code @RequiredArgsConstructor} annotation.
+ */
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
