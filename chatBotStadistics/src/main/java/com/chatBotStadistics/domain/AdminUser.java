@@ -27,7 +27,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "admin_user")
 public class AdminUser {
 
     @Id

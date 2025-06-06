@@ -14,7 +14,6 @@ import lombok.Data;
  */
 @Entity
 @Data
-@Table(name = "subtemas")
 public class Subtema {
 
     @Id
