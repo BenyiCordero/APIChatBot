@@ -211,4 +211,16 @@ public class ConsultaServiceImpl implements ConsultaService {
         }
         return estadisticas;
     }
+
+    @Override
+    public Long getConsultas(Integer year, Integer month, Integer week) {
+        Long count = consultaRepository.countConsultas(year, month, week);
+        return count != null ? count : 0L;
+    }
+
+    @Override
+    public Long getUsuarios(Integer year, Integer month, Integer week) {
+        Long count = consultaRepository.countUsuarios(year, month, week);
+        return count != null ? count : 0L;
+    }
 }

@@ -108,4 +108,14 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
     List<Object[]> countConsultasBySubtema(@Param("year") Integer year,
                                            @Param("month") Integer month,
                                            @Param("week") Integer week);
+
+    @Query("SELECT COUNT(c) FROM Consulta c WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
+    Long countConsultas(@Param("year") Integer year,
+                        @Param("month") Integer month,
+                        @Param("week") Integer week);
+
+    @Query("SELECT COUNT(u) FROM Usuario u WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
+    Long countUsuarios(@Param("year") Integer year,
+                        @Param("month") Integer month,
+                        @Param("week") Integer week);
 }

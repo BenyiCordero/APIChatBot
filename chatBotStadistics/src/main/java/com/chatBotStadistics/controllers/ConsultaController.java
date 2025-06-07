@@ -46,10 +46,7 @@ public class ConsultaController {
         return result;
     }
 
-    @GetMapping
-    public Long obtenerTotalConsultas() {
-        return consultaService.countConsultas();
-    }
+
 
     @GetMapping ("/filtrado")
     public Long obtenerTotalConsultas(
@@ -104,6 +101,8 @@ public class ConsultaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+
+
     //New endpoints
     @GetMapping("/por-temav2")
     public Map<String, Double> obtenerEstadisticasPorTema(
@@ -123,5 +122,23 @@ public class ConsultaController {
         Map<String, Double> result = consultaService.getEstadisticasPorSubtema(year, month, week);
         System.out.println("Controller Result: " + result); // Debugging
         return result;
+    }
+
+    @GetMapping
+    public Long obtenerTotalConsultas(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer week
+    ) {
+        return consultaService.getConsultas(year, month, week);
+    }
+
+    @GetMapping("/cantidad-usuarios")
+    public Long obtenerTotalUsuarios(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer week
+    ) {
+        return consultaService.getUsuarios(year, month, week);
     }
 }
