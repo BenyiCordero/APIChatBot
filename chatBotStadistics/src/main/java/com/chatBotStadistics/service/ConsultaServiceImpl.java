@@ -185,4 +185,30 @@ public class ConsultaServiceImpl implements ConsultaService {
 
         return estadisticas;
     }
+
+    @Override
+    public Map<String, Double> getEstadisticasPorSubtema(Integer year, Integer month, Integer week) {
+        List<Object[]> resultados = consultaRepository.countConsultasBySubtema(year, month, week);
+
+        if (resultados.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        long totalConsultas = resultados.stream()
+                .mapToLong(row -> ((Number) row[1]).longValue())
+                .sum();
+
+        if (totalConsultas == 0) {
+            return Collections.emptyMap();
+        }
+
+        Map<String, Double> estadisticas = new HashMap<>();
+        for (Object[] resultado : resultados) {
+            String nombreSubtema = (String) resultado[0]; // [0] es el nombre
+            long cantidad = ((Number) resultado[1]).longValue(); // [1] es el count
+            double porcentaje = (double) cantidad / totalConsultas * 100;
+            estadisticas.put(nombreSubtema, porcentaje);
+        }
+        return estadisticas;
+    }
 }
