@@ -26,5 +26,5 @@ public interface ConsultaService {
 
     //New Services
     Map<String, Double> getEstadisticasPorTema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);
-
+    Map<String, Double> getEstadisticasPorSubtema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);
 }

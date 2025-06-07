@@ -116,11 +116,11 @@ public class ConsultaController {
     }
 
     @GetMapping("/por-subtemav2")
-    public Map<String, Double> obtenerEstadisticasPorSubema(
+    public Map<String, Double> obtenerEstadisticasPorSubtema(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,
             @RequestParam(required = false) Integer week) {
-        Map<String, Double> result = consultaService.getEstadisticasPorTema(year, month, week);
+        Map<String, Double> result = consultaService.getEstadisticasPorSubtema(year, month, week);
         System.out.println("Controller Result: " + result); // Debugging
         return result;
     }
