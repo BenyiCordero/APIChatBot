@@ -114,8 +114,8 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
                         @Param("month") Integer month,
                         @Param("week") Integer week);
 
-    @Query("SELECT COUNT(u) FROM Usuario u WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
+    @Query("SELECT COUNT(DISTINCT usuario_id) FROM Consulta c WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
     Long countUsuarios(@Param("year") Integer year,
-                        @Param("month") Integer month,
-                        @Param("week") Integer week);
+                       @Param("month") Integer month,
+                       @Param("week") Integer week);
 }
