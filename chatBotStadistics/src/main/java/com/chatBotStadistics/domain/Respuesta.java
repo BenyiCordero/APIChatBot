@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Respuesta {
     @Id
     private Integer id;
-    @Column(name = "consulta_id", nullable = false, columnDefinition = "BIGINT")
-    private Long consulta_id;
+    @Column(name = "consulta_id", nullable = false)
+    private Integer consulta_id;
     private String mensaje;
 }
