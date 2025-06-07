@@ -17,5 +17,6 @@ public class Respuesta {
     private Integer id;
     @Column(name = "consulta_id", nullable = false)
     private Integer consulta_id;
+    @Column(columnDefinition = "TEXT")
     private String mensaje;
 }
