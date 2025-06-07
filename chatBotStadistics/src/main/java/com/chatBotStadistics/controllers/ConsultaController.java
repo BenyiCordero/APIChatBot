@@ -104,4 +104,24 @@ public class ConsultaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    //New endpoints
+    @GetMapping("/por-temav2")
+    public Map<String, Double> obtenerEstadisticasPorTema(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer week) {
+        Map<String, Double> result = consultaService.getEstadisticasPorTema(year, month, week);
+        System.out.println("Controller Result: " + result); // Debugging
+        return result;
+    }
+
+    @GetMapping("/por-subtemav2")
+    public Map<String, Double> obtenerEstadisticasPorSubema(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
+            @RequestParam(required = false) Integer week) {
+        Map<String, Double> result = consultaService.getEstadisticasPorTema(year, month, week);
+        System.out.println("Controller Result: " + result); // Debugging
+        return result;
+    }
 }

@@ -1,6 +1,7 @@
 package com.chatBotStadistics.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Map;
 
@@ -23,5 +24,7 @@ public interface ConsultaService {
     Long countConsultas(Integer year, Integer month);
     Long countConsultasPorYearMonthWeek(Integer year, Integer month, Integer week);
 
+    //New Services
+    Map<String, Double> getEstadisticasPorTema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);
 
 }
