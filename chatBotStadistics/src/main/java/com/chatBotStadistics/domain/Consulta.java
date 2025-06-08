@@ -36,7 +36,7 @@ public class Consulta {
     private Integer tema_id;
     @Column(name = "Usuario_id")
     private Integer usuario_id;
-    @Column(name = "mensaje")
+    @Column(name = "mensaje", columnDefinition = "TEXT")
     private String mensaje;
     @Column(name = "day")
     private Integer day;
