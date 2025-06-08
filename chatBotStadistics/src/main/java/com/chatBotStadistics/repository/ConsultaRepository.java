@@ -90,4 +90,32 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
                                  @Param("month") Integer month,
                                  @Param("week") Integer week);
 
+
+    //New queries.
+    @Query("SELECT t.nombre, COUNT(c) FROM Consulta c, Tema t WHERE t.id = c.tema_id AND (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week) GROUP BY t.nombre")
+    List<Object[]> countConsultasByCategoria(@Param("year") Integer year,
+                                             @Param("month") Integer month,
+                                             @Param("week") Integer week);
+
+    @Query("""
+    SELECT s.nombre, COUNT(c)
+    FROM Consulta c, Subtema s
+    WHERE s.id = c.subtema_id
+    AND (:year IS NULL OR c.year = :year)
+    AND (:month IS NULL OR c.month = :month)
+    AND (:week IS NULL OR c.week = :week)
+    GROUP BY s.nombre""")
+    List<Object[]> countConsultasBySubtema(@Param("year") Integer year,
+                                           @Param("month") Integer month,
+                                           @Param("week") Integer week);
+
+    @Query("SELECT COUNT(c) FROM Consulta c WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
+    Long countConsultas(@Param("year") Integer year,
+                        @Param("month") Integer month,
+                        @Param("week") Integer week);
+
+    @Query("SELECT COUNT(DISTINCT usuario_id) FROM Consulta c WHERE (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week)")
+    Long countUsuarios(@Param("year") Integer year,
+                       @Param("month") Integer month,
+                       @Param("week") Integer week);
 }
