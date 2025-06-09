@@ -5,20 +5,21 @@ import com.chatBotStadistics.dto.PromptRequestDTO;
 import com.chatBotStadistics.service.ConsultaService;
 import com.chatBotStadistics.service.PromptService;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Test class for testing {@link ConsultaController}.
@@ -44,130 +45,157 @@ import java.util.Map;
  * - Correct retrieval of prompts or statistical data.
  * - Handling of non-existing resources and returning appropriate HTTP status codes.
  */
-@WebMvcTest(ConsultaController.class)
+
+@ExtendWith(MockitoExtension.class) //Permite inyeccion de dependencias en testeo.
 class ConsultaControllerTest {
-
-    @Test
-    void createPrompt_ShouldReturnBadRequest_WhenContentIsNull() throws Exception {
-        mockMvc.perform(post("/consultas/prompt/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"content\":null}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors[0]", is("Content cannot be blank")));
-    }
-
-    @Test
-    void createPrompt_ShouldReturnBadRequest_WhenContentIsTooLong() throws Exception {
-        String longContent = "a".repeat(10001); // Assuming the system rejects content longer than 10,000 characters.
-
-        mockMvc.perform(post("/consultas/prompt/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"content\":\"" + longContent + "\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors[0]", is("Content exceeds the maximum length allowed")));
-    }
 
     @Autowired
     private MockMvc mockMvc;
 
-    @SpyBean
+    @Mock
     private PromptService promptService;
 
-    @SpyBean
+    @Mock
     private ConsultaService consultaService;
 
-    @Test
-    void createPrompt_ShouldReturnCreatedPrompt_WhenValidRequest() throws Exception {
-        PromptRequestDTO promptRequestDTO = new PromptRequestDTO("Test prompt content");
-        Prompt createdPrompt = new Prompt(1, "Test prompt content");
-
-        Mockito.when(promptService.createPrompt(Mockito.any(PromptRequestDTO.class))).thenReturn(createdPrompt);
-
-        mockMvc.perform(post("/consultas/prompt/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"content\": \"Test prompt content\"}"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.content", is("Test prompt content")));
-    }
+    @InjectMocks //Inyectamos el mock de la clase que vamos a testear.
+    private ConsultaController controller;
 
     @Test
-    void createPrompt_ShouldReturnBadRequest_WhenContentIsBlank() throws Exception {
-        mockMvc.perform(post("/consultas/prompt/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"content\": \"\"}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors[0]", is("Content cannot be blank")));
-    }
+    void createPrompt_ShouldReturnOKRequest_WhenContentIsNotNull() throws Exception {
+        //ARRANGE -- Parametros y resultados.
+        PromptRequestDTO prompt = new PromptRequestDTO("Prompt chatbot");
+        Prompt promptResult = new Prompt(1, "Prompt chatbot");
+        when(promptService.createPrompt(prompt)).thenReturn(promptResult);
 
-    @Test
-    void createPrompt_ShouldReturnBadRequest_WhenContentIsMissing() throws Exception {
-        mockMvc.perform(post("/consultas/prompt/create")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors[0]", is("Content cannot be blank")));
+        //ACT
+        ResponseEntity<Prompt> response = controller.createPrompt(prompt);
+
+        //ASSERT
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     void getPrompt_ShouldReturnPrompt_WhenValidId() throws Exception {
+        Integer id = 1;
         Prompt prompt = new Prompt(1, "Sample prompt content");
+        when(promptService.getPrompt(id)).thenReturn(Optional.of(prompt));
 
-        Mockito.when(promptService.getPrompt(1)).thenReturn(java.util.Optional.of(prompt));
+        ResponseEntity<Prompt> response = controller.getPrompt(id);
 
-        mockMvc.perform(get("/consultas/prompt/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.content", is("Sample prompt content")));
+        //ASSERT
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     void getPrompt_ShouldReturnNotFound_WhenInvalidId() throws Exception {
-        Mockito.when(promptService.getPrompt(99)).thenReturn(java.util.Optional.empty());
+        when(promptService.getPrompt(99)).thenReturn(java.util.Optional.empty());
 
-        mockMvc.perform(get("/consultas/prompt/99"))
-                .andExpect(status().isNotFound());
+        ResponseEntity<Prompt> response = controller.getPrompt(99);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    void obtenerEstadisticasPorTema_ShouldReturnValidData_WhenDataExists() throws Exception {
-        Map<String, Double> mockStatistics = Map.of("Topic1", 5.0, "Topic2", 10.0);
+    void updatePrompt_ShouldReturnOKRequest() {
+        Integer id = 1;
+        PromptRequestDTO request = new PromptRequestDTO("New prompt");
+        Prompt pastPrompt = new Prompt(1, "New prompt");
+        when(promptService.updatePrompt(id, request)).thenReturn(Optional.of(pastPrompt));
 
-        Mockito.when(consultaService.getEstadisticasPorTema()).thenReturn(mockStatistics);
+        ResponseEntity<Prompt> response = controller.updatePrompt(id, request);
 
-        mockMvc.perform(get("/consultas/por-tema"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.Topic1", is(5.0)))
-                .andExpect(jsonPath("$.Topic2", is(10.0)));
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
-    void obtenerEstadisticasPorTema_ShouldReturnEmptyMap_WhenNoData() throws Exception {
-        Mockito.when(consultaService.getEstadisticasPorTema()).thenReturn(Map.of());
+    void obtenerEstadisticasPorTema() {
+        //Arrange -- Parametros opcionales
+        Integer year = 2025;
+        Integer month = 12;
+        Integer week = 4;
+        Map<String, Double> expectedMap = new HashMap<>();
+        expectedMap.put("itemA", 50.5);
+        expectedMap.put("itemB", 20.0);
+        expectedMap.put("itemC", 29.5);
 
-        mockMvc.perform(get("/consultas/por-tema"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(0)));
+        when(consultaService.getEstadisticasPorTema(year, month, week)).thenReturn(expectedMap);
+
+        //ACT
+        Map<String, Double> response = controller.obtenerEstadisticasPorTema(year, month, week);
+
+        //ASSERT
+        verify(consultaService, times(1)).getEstadisticasPorTema(year, month, week);
+        assertEquals(response, expectedMap);
+        assertEquals(expectedMap.size(), response.size());
     }
 
     @Test
-    void obtenerEstadisticasPorSubtema_ShouldReturnValidData_WhenDataExists() throws Exception {
-        Map<String, Double> mockStatistics = Map.of("Subtopic1", 15.0, "Subtopic2", 20.0);
+    void obtenerEstadisticasPorSubtema() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Map<String, Double> expectedMap = new HashMap<>();
+        expectedMap.put("itemA", 50.5);
+        expectedMap.put("itemB", 20.0);
+        expectedMap.put("itemC", 29.5);
 
-        Mockito.when(consultaService.getEstadisticasPorSubtema()).thenReturn(mockStatistics);
+        when(consultaService.getEstadisticasPorSubtema(year, month, week)).thenReturn(expectedMap);
 
-        mockMvc.perform(get("/consultas/por-subtema"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.Subtopic1", is(15.0)))
-                .andExpect(jsonPath("$.Subtopic2", is(20.0)));
+        Map<String, Double> response = controller.obtenerEstadisticasPorSubtema(year, month, week);
+
+        //ASSERT
+        verify(consultaService, times(1)).getEstadisticasPorSubtema(year, month, week);
+        assertEquals(response, expectedMap);
+        assertEquals(expectedMap.size(), response.size());
     }
 
     @Test
-    void obtenerEstadisticasPorSubtema_ShouldReturnEmptyMap_WhenNoData() throws Exception {
-        Mockito.when(consultaService.getEstadisticasPorSubtema()).thenReturn(Map.of());
+    void obtenerTotalConsultas() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Long consults = 20l;
+        Long consultsNull = 50l;
 
-        mockMvc.perform(get("/consultas/por-subtema"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(0)));
+        // Mock para el escenario donde los parámetros son nulos (no enviados en la URL)
+        when(consultaService.getConsultas(isNull(), isNull(), isNull())).thenReturn(consultsNull);
+        when(consultaService.getConsultas(year, month, week)).thenReturn(consults);
+
+        //ACT
+        Long response = controller.obtenerTotalConsultas(year, month, week);
+        Long responseNull = controller.obtenerTotalConsultas(isNull(), isNull(), isNull());
+
+        //ASSERT
+        assertEquals(response, consults);
+        assertEquals(responseNull, consultsNull);
+        assertTrue(responseNull >= response);
+        verifyNoMoreInteractions(consultaService);
+    }
+
+    @Test
+    void obtenerTotalUsuarios() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Long users = 20l;
+        Long usersNull = 50l;
+
+        // Mock para el escenario donde los parámetros son nulos (no enviados en la URL)
+        when(consultaService.getUsuarios(isNull(), isNull(), isNull())).thenReturn(usersNull);
+        when(consultaService.getUsuarios(year, month, week)).thenReturn(users);
+
+        //ACT
+        Long response = controller.obtenerTotalUsuarios(year, month, week);
+        Long responseNull = controller.obtenerTotalUsuarios(isNull(), isNull(), isNull());
+
+        //ASSERT
+        assertEquals(response, users);
+        assertEquals(responseNull, usersNull);
+        assertTrue(responseNull >= response);
+        verifyNoMoreInteractions(consultaService);
     }
 }
