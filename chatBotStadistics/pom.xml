@@ -108,6 +108,7 @@
 			<artifactId>jaxb-impl</artifactId>
 			<version>2.2.5-b10</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
