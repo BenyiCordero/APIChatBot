@@ -4,28 +4,18 @@ import com.chatBotStadistics.domain.Prompt;
 import com.chatBotStadistics.dto.PromptRequestDTO;
 import com.chatBotStadistics.service.ConsultaService;
 import com.chatBotStadistics.service.PromptService;
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -142,13 +132,70 @@ class ConsultaControllerTest {
 
     @Test
     void obtenerEstadisticasPorSubtema() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Map<String, Double> expectedMap = new HashMap<>();
+        expectedMap.put("itemA", 50.5);
+        expectedMap.put("itemB", 20.0);
+        expectedMap.put("itemC", 29.5);
+
+        when(consultaService.getEstadisticasPorSubtema(year, month, week)).thenReturn(expectedMap);
+
+        Map<String, Double> response = controller.obtenerEstadisticasPorSubtema(year, month, week);
+
+        //ASSERT
+        verify(consultaService, times(1)).getEstadisticasPorSubtema(year, month, week);
+        assertEquals(response, expectedMap);
+        assertEquals(expectedMap.size(), response.size());
     }
 
     @Test
     void obtenerTotalConsultas() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Long consults = 20l;
+        Long consultsNull = 50l;
+
+        // Mock para el escenario donde los parámetros son nulos (no enviados en la URL)
+        when(consultaService.getConsultas(isNull(), isNull(), isNull())).thenReturn(consultsNull);
+        when(consultaService.getConsultas(year, month, week)).thenReturn(consults);
+
+        //ACT
+        Long response = controller.obtenerTotalConsultas(year, month, week);
+        Long responseNull = controller.obtenerTotalConsultas(isNull(), isNull(), isNull());
+
+        //ASSERT
+        assertEquals(response, consults);
+        assertEquals(responseNull, consultsNull);
+        assertTrue(responseNull >= response);
+        verifyNoMoreInteractions(consultaService);
     }
 
     @Test
     void obtenerTotalUsuarios() {
+        //Arrange parameters.
+        Integer year = 2025;
+        Integer month = 6;
+        Integer week = 4;
+        Long users = 20l;
+        Long usersNull = 50l;
+
+        // Mock para el escenario donde los parámetros son nulos (no enviados en la URL)
+        when(consultaService.getUsuarios(isNull(), isNull(), isNull())).thenReturn(usersNull);
+        when(consultaService.getUsuarios(year, month, week)).thenReturn(users);
+
+        //ACT
+        Long response = controller.obtenerTotalUsuarios(year, month, week);
+        Long responseNull = controller.obtenerTotalUsuarios(isNull(), isNull(), isNull());
+
+        //ASSERT
+        assertEquals(response, users);
+        assertEquals(responseNull, usersNull);
+        assertTrue(responseNull >= response);
+        verifyNoMoreInteractions(consultaService);
     }
 }
