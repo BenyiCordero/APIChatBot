@@ -38,60 +38,7 @@ import java.util.List;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
 
-     // Contar consultas por subtema (id y nombre)
-    @Query("SELECT s.id, s.nombre, COUNT(c) " +
-            "FROM Consulta c, Subtema s " +
-            "WHERE c.subtema_id = s.id " +
-            "GROUP BY s.id, s.nombre")
-    List<Object[]> countConsultasBySubtema();
-
-    // Contar consultas por tema (id y nombre)
-    @Query("SELECT t.id, t.nombre, COUNT(c) " +
-            "FROM Consulta c, Tema t " +
-            "WHERE c.tema_id = t.id " +
-            "GROUP BY t.id, t.nombre")
-    List<Object[]> countConsultasByTema();
-
-    // Contar total de consultas
-    @Query("SELECT COUNT(c) FROM Consulta c")
-    Long countConsultas();
-
-    @Query("SELECT new com.chatBotStadistics.dto.SubtemaEstadisticaDTO(s.nombre, COUNT(c)) " +
-            "FROM Consulta c, Subtema s " +
-            "WHERE s.id = c.subtema_id " +
-            "AND (:year IS NULL OR c.year = :year) " +
-            "AND (:month IS NULL OR c.month = :month) " +
-            "GROUP BY s.nombre")
-    List<SubtemaEstadisticaDTO> countConsultasBySubtemaDTO(@Param("year") Integer year,
-                                                           @Param("month") Integer month);
-
-    @Query("SELECT new com.chatBotStadistics.dto.TemaEstadisticaDTO(t.nombre, COUNT(c)) " +
-            "FROM Consulta c, Tema t " +
-            "WHERE t.id = c.tema_id " +
-            "AND (:year IS NULL OR c.year = :year) " +
-            "AND (:month IS NULL OR c.month = :month) " +
-            "GROUP BY t.nombre")
-    List<TemaEstadisticaDTO> countConsultasByTemaDTO(@Param("year") Integer year,
-                                                     @Param("month") Integer month);
-
-    @Query("SELECT COUNT(c) " +
-            "FROM Consulta c " +
-            "WHERE year IS NULL OR c.year = :year " +
-            "AND (:month IS NULL OR c.month = :month)")
-    Long countConsultasF(@Param("year") Integer year,
-                         @Param("month") Integer month);
-
-    @Query("SELECT COUNT (DISTINCT c.usuario_id) " +
-            "FROM Consulta c " + // Añadí un espacio aquí
-            "WHERE (:year IS NULL OR c.year = :year) " +
-            "AND (:month IS NULL OR c.month = :month) " +
-            "AND (:week IS NULL OR c.week = :week)")
-    Long countUsuariosConsultasF(@Param("year") Integer year,
-                                 @Param("month") Integer month,
-                                 @Param("week") Integer week);
-
-
-    //New queries.
+     //New queries.
     @Query("SELECT t.nombre, COUNT(c) FROM Consulta c, Tema t WHERE t.id = c.tema_id AND (:year IS NULL OR c.year = :year) AND (:month IS NULL OR c.month = :month) AND (:week IS NULL OR c.week = :week) GROUP BY t.nombre")
     List<Object[]> countConsultasByCategoria(@Param("year") Integer year,
                                              @Param("month") Integer month,

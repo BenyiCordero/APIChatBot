@@ -15,15 +15,6 @@ import java.util.Map;
  */
 @Service
 public interface ConsultaService {
-
-    Map<String, Double> getEstadisticasPorTema();
-    Map<String, Double> getEstadisticasPorTema(Integer year, Integer month);
-    Map<String, Double> getEstadisticasPorSubtema();
-    Map<String, Double> getEstadisticasPorSubtema(Integer year, Integer month);
-    Long countConsultas();
-    Long countConsultas(Integer year, Integer month);
-    Long countConsultasPorYearMonthWeek(Integer year, Integer month, Integer week);
-
     //New Services
     Map<String, Double> getEstadisticasPorTema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);
     Map<String, Double> getEstadisticasPorSubtema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);
