@@ -1,5 +1,6 @@
 package com.chatBotStadistics.repository;
 
+import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.domain.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +35,5 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
 
     Optional<Token> findByToken(String token);
 
+    List<Token> findByAdminUser(AdminUser adminUser);
 }
