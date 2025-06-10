@@ -13,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
@@ -116,17 +117,16 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional // Asegúrate de que este método o el que lo llama tenga @Transactional
     public void revokeAllUserTokens(final AdminUser adminUser) {
-        final List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(adminUser.getId());
-        if (!validUserTokens.isEmpty()) {
-            validUserTokens.forEach(token -> {
-                token.setIsExpired(true);
-                token.setIsRevoked(true);
-            });
-            tokenRepository.saveAll(validUserTokens);
+        // Encuentra TODOS los tokens de ese usuario, activos o inactivos.
+        // Esto es más seguro para evitar duplicados si un token "viejo" que no era "valid" causó el problema.
+        final List<Token> allUserTokens = tokenRepository.findByAdminUser(adminUser); // Necesitarías este método en tu TokenRepository
+
+        if (!allUserTokens.isEmpty()) {
+            tokenRepository.deleteAll(allUserTokens); // <-- Elimina todos los tokens anteriores del usuario
         }
     }
-
     @Override
     public TokenResponse refreshToken(@NotNull final String authentication) {
 
