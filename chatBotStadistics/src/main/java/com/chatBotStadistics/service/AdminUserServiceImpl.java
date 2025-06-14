@@ -36,15 +36,11 @@ import java.util.Optional;
 public class AdminUserServiceImpl implements UserDetailsService, AdminUserService {
 
     @Autowired
-    AdminUserService adminUserService;
-
-    public Optional<AdminUser> findUserByEmail(String email) {
-        return adminUserService.findByEmail(email);
-    }
+    AdminUserRepository adminUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return findUserByEmail(email)
+        return findByEmail(email)
                 .map(user -> org.springframework.security.core.userdetails.User
                         .builder()
                         .username(user.getEmail())
@@ -55,6 +51,6 @@ public class AdminUserServiceImpl implements UserDetailsService, AdminUserServic
 
     @Override
     public Optional<AdminUser> findByEmail(String email) {
-        return adminUserService.findByEmail(email);
+        return adminUserRepository.findByEmail(email);
     }
 }
