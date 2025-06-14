@@ -8,6 +8,7 @@ import com.chatBotStadistics.dto.TokenResponse;
 import com.chatBotStadistics.repository.TokenRepository;
 import com.chatBotStadistics.repository.AdminUserRepository;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,19 +51,16 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final AdminUserRepository repository;
-    private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-
-    public AuthServiceImpl(AdminUserRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.repository = repository;
-        this.tokenRepository = tokenRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    AdminUserRepository repository;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     @Override
     public TokenResponse register(final RegisterRequest request) {
