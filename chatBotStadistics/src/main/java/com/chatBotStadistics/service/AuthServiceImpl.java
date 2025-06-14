@@ -61,6 +61,8 @@ public class AuthServiceImpl implements AuthService {
     JwtService jwtService;
     @Autowired
     AuthenticationManager authenticationManager;
+    @Autowired
+    AdminUserService adminUserService;
 
     @Override
     public TokenResponse register(final RegisterRequest request) {
@@ -93,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
             e.printStackTrace();
             throw e;
         }
-        final AdminUser adminUser = repository.findByEmail(request.email())
+        final AdminUser adminUser = adminUserService.findByEmail(request.email())
                 .orElseThrow();
         final String accessToken = jwtService.generateToken(adminUser);
         final String refreshToken = jwtService.generateRefreshToken(adminUser);
@@ -137,7 +139,7 @@ public class AuthServiceImpl implements AuthService {
             return null;
         }
 
-        final AdminUser adminUser = this.repository.findByEmail(userEmail).orElseThrow();
+        final AdminUser adminUser = this.adminUserService.findByEmail(userEmail).orElseThrow();
         final boolean isTokenValid = jwtService.isTokenValid(refreshToken, adminUser);
         if (!isTokenValid) {
             return null;

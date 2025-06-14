@@ -3,6 +3,7 @@ package com.chatBotStadistics.config;
 import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.repository.TokenRepository;
 import com.chatBotStadistics.repository.AdminUserRepository;
+import com.chatBotStadistics.service.AdminUserService;
 import com.chatBotStadistics.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -56,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     TokenRepository tokenRepository;
     @Autowired
-    AdminUserRepository adminUserRepository;
+    AdminUserService adminUserService;
 
     @Override
     protected void doFilterInternal(
@@ -90,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         if (isTokenExpiredOrRevoked) {
-            final Optional<AdminUser> user = adminUserRepository.findByEmail(userEmail);
+            final Optional<AdminUser> user = adminUserService.findByEmail(userEmail);
 
             if (user.isPresent()) {
                 final boolean isTokenValid = jwtService.isTokenValid(jwt, user.get());
