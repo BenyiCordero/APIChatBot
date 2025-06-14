@@ -3,6 +3,7 @@ package com.chatBotStadistics.config;
 import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.repository.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +35,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class AppConfig {
-    private final AdminUserRepository repository;
+
+    @Autowired
+    AdminUserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {

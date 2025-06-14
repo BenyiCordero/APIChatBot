@@ -27,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
-
+    // Separar servicios
     @Autowired
     ConsultaService consultaService;
     @Autowired

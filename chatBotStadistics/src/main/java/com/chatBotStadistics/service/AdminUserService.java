@@ -3,6 +3,7 @@ package com.chatBotStadistics.service;
 import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.repository.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +34,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AdminUserService implements UserDetailsService {
-    private final AdminUserRepository adminUserRepository;
+
+    @Autowired
+    AdminUserRepository adminUserRepository;
 
     public Optional<AdminUser> findUserByEmail(String email) {
         return adminUserRepository.findByEmail(email);

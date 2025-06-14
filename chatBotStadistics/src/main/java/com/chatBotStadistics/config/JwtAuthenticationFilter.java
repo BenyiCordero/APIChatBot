@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,10 +49,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
-    private final AdminUserRepository adminUserRepository;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    UserDetailsService userDetailsService;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    AdminUserRepository adminUserRepository;
 
     @Override
     protected void doFilterInternal(
