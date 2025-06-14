@@ -2,6 +2,7 @@ package com.chatBotStadistics.config;
 
 import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.repository.AdminUserRepository;
+import com.chatBotStadistics.service.AdminUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,12 +38,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppConfig {
 
     @Autowired
-    AdminUserRepository repository;
+    AdminUserService adminUserService;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            final AdminUser adminUser = repository.findByEmail(username)
+            final AdminUser adminUser = adminUserService.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
             return org.springframework.security.core.userdetails.User
                     .builder()
