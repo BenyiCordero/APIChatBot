@@ -3,12 +3,14 @@ package com.chatBotStadistics.config;
 import com.chatBotStadistics.domain.AdminUser;
 import com.chatBotStadistics.repository.TokenRepository;
 import com.chatBotStadistics.repository.AdminUserRepository;
+import com.chatBotStadistics.service.AdminUserService;
 import com.chatBotStadistics.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -48,10 +50,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
-    private final TokenRepository tokenRepository;
-    private final AdminUserRepository adminUserRepository;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    UserDetailsService userDetailsService;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    AdminUserService adminUserService;
 
     @Override
     protected void doFilterInternal(
@@ -85,7 +91,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         if (isTokenExpiredOrRevoked) {
-            final Optional<AdminUser> user = adminUserRepository.findByEmail(userEmail);
+            final Optional<AdminUser> user = adminUserService.findByEmail(userEmail);
 
             if (user.isPresent()) {
                 final boolean isTokenValid = jwtService.isTokenValid(jwt, user.get());

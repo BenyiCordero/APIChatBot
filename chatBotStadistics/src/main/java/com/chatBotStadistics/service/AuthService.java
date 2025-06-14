@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
  * It serves as the contract for implementing authentication-related functionality
  * in the application.
  */
-@Service
+
 public interface AuthService {
 
     TokenResponse register(final RegisterRequest request);
