@@ -19,7 +19,7 @@ import java.util.Optional;
  * - updatePrompt: Updates the content of an existing prompt identified by its ID.
  * - createPrompt: Creates a new prompt with the provided content data.
  */
-@Service
+
 public interface PromptService {
 
     Optional<Prompt> getPrompt(Integer id);

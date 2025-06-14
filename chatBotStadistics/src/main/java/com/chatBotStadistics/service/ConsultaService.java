@@ -13,7 +13,7 @@ import java.util.Map;
  * It serves as the contract for implementing statistical functionality
  * in the application.
  */
-@Service
+
 public interface ConsultaService {
     //New Services
     Map<String, Double> getEstadisticasPorTema(@Param("year") Integer year, @Param("month") Integer month, @Param("week") Integer week);

@@ -8,6 +8,7 @@ import com.chatBotStadistics.dto.TokenResponse;
 import com.chatBotStadistics.repository.TokenRepository;
 import com.chatBotStadistics.repository.AdminUserRepository;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,19 +51,18 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final AdminUserRepository repository;
-    private final TokenRepository tokenRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
-
-    public AuthServiceImpl(AdminUserRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.repository = repository;
-        this.tokenRepository = tokenRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
+    @Autowired
+    AdminUserRepository repository;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Autowired
+    JwtService jwtService;
+    @Autowired
+    AuthenticationManager authenticationManager;
+    @Autowired
+    AdminUserService adminUserService;
 
     @Override
     public TokenResponse register(final RegisterRequest request) {
@@ -95,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
             e.printStackTrace();
             throw e;
         }
-        final AdminUser adminUser = repository.findByEmail(request.email())
+        final AdminUser adminUser = adminUserService.findByEmail(request.email())
                 .orElseThrow();
         final String accessToken = jwtService.generateToken(adminUser);
         final String refreshToken = jwtService.generateRefreshToken(adminUser);
@@ -139,7 +139,7 @@ public class AuthServiceImpl implements AuthService {
             return null;
         }
 
-        final AdminUser adminUser = this.repository.findByEmail(userEmail).orElseThrow();
+        final AdminUser adminUser = this.adminUserService.findByEmail(userEmail).orElseThrow();
         final boolean isTokenValid = jwtService.isTokenValid(refreshToken, adminUser);
         if (!isTokenValid) {
             return null;

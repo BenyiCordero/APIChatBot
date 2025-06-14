@@ -18,7 +18,7 @@ import java.util.Date;
  * - Extracting the expiration date from a token.
  * - Retrieving the secret key used for signing the tokens.
  */
-@Service
+
 public interface JwtService {
 
     String extractUsername(String token);

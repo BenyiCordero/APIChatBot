@@ -45,7 +45,7 @@ import java.util.Map;
 public class ConsultaServiceImpl implements ConsultaService {
 
     @Autowired
-    private ConsultaRepository consultaRepository;
+    ConsultaRepository consultaRepository;
 
      //New Services.
     @Override
