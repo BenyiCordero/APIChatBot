@@ -3,6 +3,7 @@ package com.chatBotStadistics.controllers;
 import com.chatBotStadistics.dto.AdminUserResponse;
 import com.chatBotStadistics.repository.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminUserController {
 
-    private final AdminUserRepository adminUserRepository;
+    @Autowired
+    AdminUserRepository adminUserRepository;
 
     @GetMapping
     public List<AdminUserResponse> changePassword() {

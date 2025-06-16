@@ -27,31 +27,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
-
+    // Separar servicios
     @Autowired
     ConsultaService consultaService;
-    @Autowired
-    PromptService promptService;
-
-    @PostMapping ("/prompt/create")
-    public ResponseEntity<Prompt> createPrompt(@Valid @RequestBody PromptRequestDTO promptRequestDTO) {
-        Prompt createdPrompt = promptService.createPrompt(promptRequestDTO);
-        return new ResponseEntity<>(createdPrompt, HttpStatus.CREATED);
-    }
-
-    @GetMapping ("/prompt/{id}")
-    public ResponseEntity<Prompt> getPrompt(@PathVariable Integer id) {
-        return promptService.getPrompt(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-    @PutMapping("/prompt/actualizar/{id}")
-    public ResponseEntity<Prompt> updatePrompt(@PathVariable Integer id,
-                                               @Valid @RequestBody PromptRequestDTO promptRequestDTO) {
-        return promptService.updatePrompt(id, promptRequestDTO)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
 
     //New endpoints
     @GetMapping("/por-temav2")
