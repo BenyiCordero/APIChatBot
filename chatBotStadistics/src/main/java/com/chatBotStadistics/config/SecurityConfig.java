@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
                     //Cambiar para el front
-                    configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "https://ca40-201-163-190-4.ngrok-free.app", "http://localhost:8080", "https://chatbotstadistics.vercel.app"));
+                    configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "https://benyicordero.github.io/ChatBotFront/", "http://localhost:8080", "https://chatbotstadistics.vercel.app"));
                     configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Cache-Control"));
                     configuration.setAllowedHeaders(List.of("*","ngrok-skip-browser-warning"));
