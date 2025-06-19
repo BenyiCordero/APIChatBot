@@ -1,10 +1,13 @@
-# Etapa 1: build del .jar
 FROM eclipse-temurin:17-jdk AS build
 WORKDIR /app
-COPY . .
-RUN ./mvnw clean package -DskipTests
 
-# Etapa 2: imagen final con solo el .jar
+# Instalamos Maven
+RUN apt-get update && apt-get install -y maven
+
+COPY . .
+
+RUN mvn clean package -DskipTests
+
 FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
