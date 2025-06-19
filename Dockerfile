@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk AS build
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 
 # Instalamos Maven
@@ -11,7 +11,7 @@ WORKDIR /app/chatBotStadistics
 
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/chatBotStadistics/target/*.jar app.jar
 EXPOSE 8081
