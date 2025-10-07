@@ -15,8 +15,9 @@ public class Respuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "consulta_id", nullable = false)
-    private Integer consulta_id;
-    @Column(columnDefinition = "TEXT")
+    @OneToOne
+    @JoinColumn(name = "consulta_id", referencedColumnName = "id")
+    private Consulta consulta;
+    @Column(name = "mensaje", columnDefinition = "TEXT")
     private String mensaje;
 }
