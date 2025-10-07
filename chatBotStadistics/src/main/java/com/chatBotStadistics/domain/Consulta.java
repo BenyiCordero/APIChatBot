@@ -30,12 +30,6 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Basic
-    @Column(name = "Subtema_id")
-    private Integer subtema_id;
-    @Column(name = "Tema_id")
-    private Integer tema_id;
-    @Column(name = "Usuario_id")
-    private Integer usuario_id;
     @Column(name = "mensaje", columnDefinition = "TEXT")
     private String mensaje;
     @Column(name = "day")
@@ -46,5 +40,10 @@ public class Consulta {
     private Integer year;
     @Column(name = "week")
     private Integer week;
-
+    @ManyToOne
+    @JoinColumn(name = "id_tema", referencedColumnName = "id")
+    private Tema tema;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", referencedColumnName = "id")
+    private Usuario usuario;
 }

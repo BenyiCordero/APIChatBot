@@ -1,7 +1,5 @@
 package com.chatBotStadistics.service;
 
-import com.chatBotStadistics.dto.SubtemaEstadisticaDTO;
-import com.chatBotStadistics.dto.TemaEstadisticaDTO;
 import com.chatBotStadistics.repository.ConsultaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
