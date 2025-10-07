@@ -37,6 +37,3 @@ build/
 
 *.exe
 *.exe.old
-
-# Ignorar configuración sensible
-src/main/resources/application.properties
