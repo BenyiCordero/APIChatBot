@@ -24,11 +24,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/usuarios")
-@RequiredArgsConstructor
 public class AdminUserController {
 
-    @Autowired
-    AdminUserRepository adminUserRepository;
+    private final AdminUserRepository adminUserRepository;
+
+    public AdminUserController(AdminUserRepository adminUserRepository) {
+        this.adminUserRepository = adminUserRepository;
+    }
 
     @GetMapping
     public List<AdminUserResponse> changePassword() {

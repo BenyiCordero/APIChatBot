@@ -42,10 +42,13 @@ import java.util.Map;
 @Service
 public class ConsultaServiceImpl implements ConsultaService {
 
-    @Autowired
-    ConsultaRepository consultaRepository;
+    private final ConsultaRepository consultaRepository;
 
-     //New Services.
+    public ConsultaServiceImpl(ConsultaRepository consultaRepository) {
+        this.consultaRepository = consultaRepository;
+    }
+
+    //New Services.
     @Override
     public Map<String, Double> getEstadisticasPorTema(Integer year, Integer month, Integer week) {
         List<Object[]> resultados = consultaRepository.countConsultasByCategoria(year, month, week);

@@ -56,16 +56,18 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
  */
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    JwtAuthenticationFilter jwtAuthFilter;
-    @Autowired
-    AuthenticationProvider authenticationProvider;
-    @Autowired
-    TokenRepository tokenRepository;
+    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final AuthenticationProvider authenticationProvider;
+    private final TokenRepository tokenRepository;
+
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider, TokenRepository tokenRepository) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.authenticationProvider = authenticationProvider;
+        this.tokenRepository = tokenRepository;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(final HttpSecurity http) throws Exception {

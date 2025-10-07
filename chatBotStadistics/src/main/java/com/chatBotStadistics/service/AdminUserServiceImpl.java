@@ -32,11 +32,13 @@ import java.util.Optional;
  *   interface method to load user-specific data needed for authentication.
  */
 @Service
-@RequiredArgsConstructor
 public class AdminUserServiceImpl implements UserDetailsService, AdminUserService {
 
-    @Autowired
-    AdminUserRepository adminUserRepository;
+    private final AdminUserRepository adminUserRepository;
+
+    public AdminUserServiceImpl(AdminUserRepository adminUserRepository) {
+        this.adminUserRepository = adminUserRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

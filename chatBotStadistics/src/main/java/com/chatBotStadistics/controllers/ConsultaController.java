@@ -27,9 +27,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/consultas")
 public class ConsultaController {
-    // Separar servicios
-    @Autowired
-    ConsultaService consultaService;
+
+    private final ConsultaService consultaService;
+
+    public ConsultaController(ConsultaService consultaService) {
+        this.consultaService = consultaService;
+    }
 
     //New endpoints
     @GetMapping("/por-temav2")

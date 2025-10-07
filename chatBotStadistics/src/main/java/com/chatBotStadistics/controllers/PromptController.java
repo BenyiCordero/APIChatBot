@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/consultas")
 public class PromptController {
 
-    @Autowired
-    PromptService promptService;
+    private final PromptService promptService;
+
+    public PromptController(PromptService promptService) {
+        this.promptService = promptService;
+    }
 
     @PostMapping("/prompt/create")
     public ResponseEntity<Prompt> createPrompt(@Valid @RequestBody PromptRequestDTO promptRequestDTO) {
