@@ -47,17 +47,20 @@ import java.util.Optional;
  * - AdminUserRepository: Retrieves admin user details from the database.
  */
 @Component
-@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    @Autowired
-    JwtService jwtService;
-    @Autowired
-    UserDetailsService userDetailsService;
-    @Autowired
-    TokenRepository tokenRepository;
-    @Autowired
-    AdminUserService adminUserService;
+
+    private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
+    private final TokenRepository tokenRepository;
+    private final AdminUserService adminUserService;
+
+    public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService, TokenRepository tokenRepository, AdminUserService adminUserService) {
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+        this.tokenRepository = tokenRepository;
+        this.adminUserService = adminUserService;
+    }
 
     @Override
     protected void doFilterInternal(

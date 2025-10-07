@@ -51,18 +51,21 @@ import java.util.List;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    @Autowired
-    AdminUserRepository repository;
-    @Autowired
-    TokenRepository tokenRepository;
-    @Autowired
-    PasswordEncoder passwordEncoder;
-    @Autowired
-    JwtService jwtService;
-    @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
-    AdminUserService adminUserService;
+    private final AdminUserRepository repository;
+    private final TokenRepository tokenRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final AdminUserService adminUserService;
+
+    public AuthServiceImpl(AdminUserRepository repository, TokenRepository tokenRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, AdminUserService adminUserService) {
+        this.repository = repository;
+        this.tokenRepository = tokenRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.adminUserService = adminUserService;
+    }
 
     @Override
     public TokenResponse register(final RegisterRequest request) {

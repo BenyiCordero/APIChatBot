@@ -23,8 +23,11 @@ import java.util.Optional;
 @Service
 public class PromptServiceImpl implements PromptService {
 
-    @Autowired
-    private PromptRepository promptRepository;
+    private final PromptRepository promptRepository;
+
+    public PromptServiceImpl(PromptRepository promptRepository) {
+        this.promptRepository = promptRepository;
+    }
 
     @Override
     public Optional<Prompt> getPrompt(Integer id) {

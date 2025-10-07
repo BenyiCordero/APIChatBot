@@ -37,8 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AppConfig {
 
-    @Autowired
-    AdminUserService adminUserService;
+    private final AdminUserService adminUserService;
 
     @Bean
     public UserDetailsService userDetailsService() {
