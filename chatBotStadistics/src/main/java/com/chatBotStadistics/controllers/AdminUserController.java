@@ -39,5 +39,4 @@ public class AdminUserController {
                 .map(user -> new AdminUserResponse(user.getName(), user.getEmail()))
                 .toList();
     }
-
 }
