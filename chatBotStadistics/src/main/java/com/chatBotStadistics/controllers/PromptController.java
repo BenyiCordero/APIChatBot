@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/consultas")
+@RequestMapping("/prompt")
 public class PromptController {
 
     private final PromptService promptService;
@@ -19,19 +19,19 @@ public class PromptController {
         this.promptService = promptService;
     }
 
-    @PostMapping("/prompt/create")
+    @PostMapping()
     public ResponseEntity<Prompt> createPrompt(@Valid @RequestBody PromptRequestDTO promptRequestDTO) {
         Prompt createdPrompt = promptService.createPrompt(promptRequestDTO);
         return new ResponseEntity<>(createdPrompt, HttpStatus.CREATED);
     }
 
-    @GetMapping("/prompt/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Prompt> getPrompt(@PathVariable Integer id) {
         return promptService.getPrompt(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-    @PutMapping("/prompt/actualizar/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Prompt> updatePrompt(@PathVariable Integer id,
                                                @Valid @RequestBody PromptRequestDTO promptRequestDTO) {
         return promptService.updatePrompt(id, promptRequestDTO)
