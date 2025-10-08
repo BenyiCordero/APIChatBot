@@ -34,18 +34,16 @@ public class ConsultaController {
         this.consultaService = consultaService;
     }
 
-    //New endpoints
-    @GetMapping("/por-temav2")
+    @GetMapping("/tema")
     public Map<String, Double> obtenerEstadisticasPorTema(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,
             @RequestParam(required = false) Integer week) {
         Map<String, Double> result = consultaService.getEstadisticasPorTema(year, month, week);
-        System.out.println("Controller Result: " + result); // Debugging
         return result;
     }
 
-    @GetMapping("/por-subtemav2")
+    @GetMapping("/subtema")
     public Map<String, Double> obtenerEstadisticasPorSubtema(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,
@@ -64,7 +62,7 @@ public class ConsultaController {
         return consultaService.getConsultas(year, month, week);
     }
 
-    @GetMapping("/cantidad-usuarios")
+    @GetMapping("/usuarios")
     public Long obtenerTotalUsuarios(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,
