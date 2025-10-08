@@ -53,43 +53,35 @@ JWT_SECRET=tu_clave_jwt
 ```
 ---
 
-## Endpoints abiertos
+# Endpoints abiertos
 
-### Auth (Autenticación de los Admin Users)
+## Auth (Autenticación de los Admin Users)
 - `POST /auth/register`  
-  Hace la isnerción de un nuevo Admin User, se utiliza el siguiente JSON:
-  `{
-  "name": "usuario",
-  "email" : "usuario@gmail.com",
-  "password": "1234"
+  Inserta un nuevo Admin User.  
+  **JSON de solicitud:**
+  ```json
+  {
+    "name": "usuario",
+    "email": "usuario@gmail.com",
+    "password": "1234"
   }
-  `
+  ```
 
 - `POST /auth/login`  
-  El usuario se autentifica y recibe un Bearer token, se utiliza el siguiente JSON:
-  `{
-  "email" : "usuario@gmail.com",
-  "password": "1234"
+  Autentica al usuario y devuelve un Bearer token.  
+  **JSON de solicitud:**
+  ```json
+  {
+    "email": "usuario@gmail.com",
+    "password": "1234"
   }
-  `
+  ```
 
-### Consultas (Administración de las consultas)
-
-- `GET /consultas/por-tema/`  
-  Filtrado avanzado por query params. Ejemplos de params:
-  - `startDate=YYYY-MM-DD`
-  - `endDate=YYYY-MM-DD`
-  - `topic=matematicas`
-  - `subtopic=algebra`
-  - `userId=123`
-  - `page=0`
-  - `size=50`
-# Endpoints adicionales del API ChatBot
-
+## Consultas (Administración de las consultas)
 - `GET /por-temav2`  
   Obtiene las estadísticas agrupadas por tema.  
   **Parámetros opcionales:** `year`, `month`, `week`  
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   {
     "Matemáticas": 32.5,
@@ -101,7 +93,7 @@ JWT_SECRET=tu_clave_jwt
 - `GET /por-subtemav2`  
   Devuelve las estadísticas agrupadas por subtema.  
   **Parámetros opcionales:** `year`, `month`, `week`  
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   {
     "Álgebra": 18.4,
@@ -113,7 +105,7 @@ JWT_SECRET=tu_clave_jwt
 - `GET /`  
   Retorna el total de consultas realizadas al chatbot.  
   **Parámetros opcionales:** `year`, `month`, `week`  
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   1523
   ```
@@ -121,21 +113,57 @@ JWT_SECRET=tu_clave_jwt
 - `GET /cantidad-usuarios`  
   Devuelve la cantidad total de usuarios únicos.  
   **Parámetros opcionales:** `year`, `month`, `week`  
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   287
   ```
 
+- `GET /api/stats`  
+  Obtiene estadísticas agregadas generales (conteos y métricas resumidas).  
+  **JSON de respuesta:**
+  ```json
+  {
+    "totalConsultas": 1523,
+    "consultasHoy": 34,
+    "topTemas": {
+      "Programación": 45.8,
+      "Matemáticas": 32.5
+    }
+  }
+  ```
+
+- `GET /api/stats/details`  
+  Obtiene registros paginados de interacciones (consulta, respuesta, usuario, timestamp).  
+  **Parámetros opcionales:** `page`, `size`  
+  **JSON de respuesta (ejemplo de un item):**
+  ```json
+  {
+    "id": 123,
+    "userId": "usuario123",
+    "topic": "bases de datos",
+    "subtopic": "consultas",
+    "question": "¿Cómo se hace un JOIN?",
+    "answer": "Explicación...",
+    "timestamp": "2025-10-07T14:00:00Z",
+    "metadata": { "source": "whatsapp", "sessionId": "abc123" }
+  }
+  ```
+
+- `GET /api/stats/filter`  
+  Filtrado avanzado de estadísticas por query params (fechas, tema, subtema, usuario).  
+  **Parámetros opcionales:** `startDate`, `endDate`, `topic`, `subtopic`, `userId`, `page`, `size`  
+  **JSON de respuesta:** similar a `/api/stats` o `/api/stats/details` según nivel de agregación.
+
 - `POST /prompt/create`  
   Crea un nuevo prompt del sistema.  
-  **Ejemplo JSON de solicitud:**
+  **JSON de solicitud:**
   ```json
   {
     "titulo": "Prompt educativo",
     "descripcion": "Eres un asistente educativo, amable y claro."
   }
   ```
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   {
     "id": 1,
@@ -147,7 +175,7 @@ JWT_SECRET=tu_clave_jwt
 
 - `GET /prompt/{id}`  
   Obtiene un prompt específico por su identificador.  
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   {
     "id": 1,
@@ -159,14 +187,14 @@ JWT_SECRET=tu_clave_jwt
 
 - `PUT /prompt/actualizar/{id}`  
   Actualiza un prompt existente.  
-  **Ejemplo JSON de solicitud:**
+  **JSON de solicitud:**
   ```json
   {
     "titulo": "Prompt técnico actualizado",
     "descripcion": "Eres un asistente enfocado en temas técnicos y precisos."
   }
   ```
-  **Ejemplo JSON de respuesta:**
+  **JSON de respuesta:**
   ```json
   {
     "id": 1,
@@ -174,6 +202,61 @@ JWT_SECRET=tu_clave_jwt
     "descripcion": "Eres un asistente enfocado en temas técnicos y precisos.",
     "fechaActualizacion": "2025-10-07T15:00:00Z"
   }
+  ```
+
+## Interacciones (Registro y manejo de consultas individuales)
+- `POST /api/interactions`  
+  Registra una nueva interacción (consulta + respuesta).  
+  **JSON de solicitud:**
+  ```json
+  {
+    "userId": "usuario123",
+    "topic": "bases de datos",
+    "subtopic": "consultas",
+    "question": "¿Cómo se hace un JOIN?",
+    "answer": "Explicación...",
+    "timestamp": "2025-10-07T14:00:00Z",
+    "metadata": { "source": "whatsapp", "sessionId": "abc123" }
+  }
+  ```
+  **JSON de respuesta:** objeto creado con `id` y campos anteriores.
+
+- `GET /api/interactions/{id}`  
+  Obtiene una interacción por su id.  
+  **JSON de respuesta:** igual al item en `/api/stats/details`.
+
+- `DELETE /api/interactions/{id}`  
+  Elimina una interacción por id.  
+  **JSON de respuesta:** status o mensaje de confirmación.
+
+## Administración y utilidades
+- `GET /api/prompt/current`  
+  Devuelve el prompt actualmente en uso por el chatbot.  
+  **JSON de respuesta:**
+  ```json
+  {
+    "id": 3,
+    "titulo": "Prompt actual",
+    "descripcion": "Eres directo y técnico."
+  }
+  ```
+
+- `PATCH /api/prompt/activate/{id}`  
+  Activa un prompt existente para que sea el prompt en uso.  
+  **JSON de respuesta:**
+  ```json
+  {
+    "id": 3,
+    "activo": true,
+    "fechaActivacion": "2025-10-07T16:00:00Z"
+  }
+  ```
+
+- `GET /health`  
+  Estado de salud del servicio.  
+  **JSON de respuesta:**
+  ```json
+  { "status": "UP" }
   ```
 
 ## Construcción y ejecución
