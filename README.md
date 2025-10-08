@@ -78,7 +78,7 @@ JWT_SECRET=tu_clave_jwt
   ```
 
 ## Consultas (Administración de las consultas)
-- `GET /por-temav2`  
+- `GET /tema`  
   Obtiene las estadísticas agrupadas por tema.  
   **Parámetros opcionales:** `year`, `month`, `week`  
   **JSON de respuesta:**
@@ -90,7 +90,7 @@ JWT_SECRET=tu_clave_jwt
   }
   ```
 
-- `GET /por-subtemav2`  
+- `GET /subtema`  
   Devuelve las estadísticas agrupadas por subtema.  
   **Parámetros opcionales:** `year`, `month`, `week`  
   **JSON de respuesta:**
@@ -110,7 +110,7 @@ JWT_SECRET=tu_clave_jwt
   1523
   ```
 
-- `GET /cantidad-usuarios`  
+- `GET /usuarios`  
   Devuelve la cantidad total de usuarios únicos.  
   **Parámetros opcionales:** `year`, `month`, `week`  
   **JSON de respuesta:**
@@ -118,58 +118,13 @@ JWT_SECRET=tu_clave_jwt
   287
   ```
 
-- `GET /api/stats`  
-  Obtiene estadísticas agregadas generales (conteos y métricas resumidas).  
-  **JSON de respuesta:**
-  ```json
-  {
-    "totalConsultas": 1523,
-    "consultasHoy": 34,
-    "topTemas": {
-      "Programación": 45.8,
-      "Matemáticas": 32.5
-    }
-  }
-  ```
-
-- `GET /api/stats/details`  
-  Obtiene registros paginados de interacciones (consulta, respuesta, usuario, timestamp).  
-  **Parámetros opcionales:** `page`, `size`  
-  **JSON de respuesta (ejemplo de un item):**
-  ```json
-  {
-    "id": 123,
-    "userId": "usuario123",
-    "topic": "bases de datos",
-    "subtopic": "consultas",
-    "question": "¿Cómo se hace un JOIN?",
-    "answer": "Explicación...",
-    "timestamp": "2025-10-07T14:00:00Z",
-    "metadata": { "source": "whatsapp", "sessionId": "abc123" }
-  }
-  ```
-
-- `GET /api/stats/filter`  
-  Filtrado avanzado de estadísticas por query params (fechas, tema, subtema, usuario).  
-  **Parámetros opcionales:** `startDate`, `endDate`, `topic`, `subtopic`, `userId`, `page`, `size`  
-  **JSON de respuesta:** similar a `/api/stats` o `/api/stats/details` según nivel de agregación.
-
-- `POST /prompt/create`  
+- `POST /prompt`  
   Crea un nuevo prompt del sistema.  
   **JSON de solicitud:**
   ```json
   {
     "titulo": "Prompt educativo",
     "descripcion": "Eres un asistente educativo, amable y claro."
-  }
-  ```
-  **JSON de respuesta:**
-  ```json
-  {
-    "id": 1,
-    "titulo": "Prompt educativo",
-    "descripcion": "Eres un asistente educativo, amable y claro.",
-    "fechaCreacion": "2025-10-07T14:00:00Z"
   }
   ```
 
@@ -185,7 +140,7 @@ JWT_SECRET=tu_clave_jwt
   }
   ```
 
-- `PUT /prompt/actualizar/{id}`  
+- `PUT /prompt/{id}`  
   Actualiza un prompt existente.  
   **JSON de solicitud:**
   ```json
@@ -193,70 +148,6 @@ JWT_SECRET=tu_clave_jwt
     "titulo": "Prompt técnico actualizado",
     "descripcion": "Eres un asistente enfocado en temas técnicos y precisos."
   }
-  ```
-  **JSON de respuesta:**
-  ```json
-  {
-    "id": 1,
-    "titulo": "Prompt técnico actualizado",
-    "descripcion": "Eres un asistente enfocado en temas técnicos y precisos.",
-    "fechaActualizacion": "2025-10-07T15:00:00Z"
-  }
-  ```
-
-## Interacciones (Registro y manejo de consultas individuales)
-- `POST /api/interactions`  
-  Registra una nueva interacción (consulta + respuesta).  
-  **JSON de solicitud:**
-  ```json
-  {
-    "userId": "usuario123",
-    "topic": "bases de datos",
-    "subtopic": "consultas",
-    "question": "¿Cómo se hace un JOIN?",
-    "answer": "Explicación...",
-    "timestamp": "2025-10-07T14:00:00Z",
-    "metadata": { "source": "whatsapp", "sessionId": "abc123" }
-  }
-  ```
-  **JSON de respuesta:** objeto creado con `id` y campos anteriores.
-
-- `GET /api/interactions/{id}`  
-  Obtiene una interacción por su id.  
-  **JSON de respuesta:** igual al item en `/api/stats/details`.
-
-- `DELETE /api/interactions/{id}`  
-  Elimina una interacción por id.  
-  **JSON de respuesta:** status o mensaje de confirmación.
-
-## Administración y utilidades
-- `GET /api/prompt/current`  
-  Devuelve el prompt actualmente en uso por el chatbot.  
-  **JSON de respuesta:**
-  ```json
-  {
-    "id": 3,
-    "titulo": "Prompt actual",
-    "descripcion": "Eres directo y técnico."
-  }
-  ```
-
-- `PATCH /api/prompt/activate/{id}`  
-  Activa un prompt existente para que sea el prompt en uso.  
-  **JSON de respuesta:**
-  ```json
-  {
-    "id": 3,
-    "activo": true,
-    "fechaActivacion": "2025-10-07T16:00:00Z"
-  }
-  ```
-
-- `GET /health`  
-  Estado de salud del servicio.  
-  **JSON de respuesta:**
-  ```json
-  { "status": "UP" }
   ```
 
 ## Construcción y ejecución
