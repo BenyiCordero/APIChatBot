@@ -18,12 +18,8 @@ public class Subtema {
 
     @Id
     private Integer id;
-
     private String nombre;
-
     @ManyToOne
-    @JoinColumn(name = "Tema_id")  // si quieres relacionar subtema con tema
+    @JoinColumn(name = "tema_id")  // si quieres relacionar subtema con tema
     private Tema tema;
-
-
 }
