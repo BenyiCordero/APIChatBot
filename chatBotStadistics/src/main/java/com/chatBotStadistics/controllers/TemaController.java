@@ -21,7 +21,7 @@ public class TemaController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(temaService.getTema(id));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -30,7 +30,7 @@ public class TemaController {
         try{
             return ResponseEntity.status(HttpStatus.OK).body(temaService.getTemas());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class TemaController {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(temaService.postTema(tema));
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class TemaController {
             temaService.deleteTema(id);
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 }

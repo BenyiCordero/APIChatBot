@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TemaRepository extends JpaRepository<Tema, Integer> {
-    Tema getById(Integer id);
 }
