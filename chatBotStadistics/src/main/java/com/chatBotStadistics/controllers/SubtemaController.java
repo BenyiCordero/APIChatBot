@@ -2,7 +2,9 @@ package com.chatBotStadistics.controllers;
 
 import com.chatBotStadistics.domain.Subtema;
 import com.chatBotStadistics.domain.Tema;
+import com.chatBotStadistics.dto.SubtemaDTO;
 import com.chatBotStadistics.service.SubtemaService;
+import com.chatBotStadistics.service.TemaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class SubtemaController {
 
     private final SubtemaService subtemaService;
+    private final TemaService temaService;
 
-    public SubtemaController(SubtemaService subtemaService) {
+    public SubtemaController(SubtemaService subtemaService, TemaService temaService) {
         this.subtemaService = subtemaService;
+        this.temaService = temaService;
     }
 
     @GetMapping("/{id}")
@@ -36,8 +40,11 @@ public class SubtemaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> postSubtema(@RequestBody Subtema subtema){
+    public ResponseEntity<?> postSubtema(@RequestBody SubtemaDTO subtemaDTO){
         try{
+            System.out.println(subtemaDTO.toString());
+            Tema tema = temaService.getTema(subtemaDTO.tema_id());
+            Subtema subtema = new Subtema(subtemaDTO.id(), subtemaDTO.nombre(), tema);
             return ResponseEntity.status(HttpStatus.CREATED).body(subtemaService.postSubtema(subtema));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

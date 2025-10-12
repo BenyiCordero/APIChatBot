@@ -41,8 +41,8 @@ public class Consulta {
     @Column(name = "week")
     private Integer week;
     @ManyToOne
-    @JoinColumn(name = "subtema_id", referencedColumnName = "id")
-    private Subtema subtema;
+    @JoinColumn(name = "tema_id", referencedColumnName = "id")
+    private Tema tema;
     @ManyToOne
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;

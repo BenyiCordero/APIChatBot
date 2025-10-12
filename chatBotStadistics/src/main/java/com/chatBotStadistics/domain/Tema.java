@@ -3,7 +3,9 @@ package com.chatBotStadistics.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * The Tema class represents a theme or topic entity in the system.
@@ -14,6 +16,8 @@ import lombok.Data;
  * - nombre: The name of the Tema.
  */
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Tema {
 
