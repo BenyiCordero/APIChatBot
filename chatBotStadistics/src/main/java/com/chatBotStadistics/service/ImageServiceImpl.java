@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository repository;
-    private final SubtemaRepository subtemaRepository;
+    private final SubtemaService subtemaService;
 
-    public ImageServiceImpl(ImageRepository repository, SubtemaRepository subtemaRepository) {
+    public ImageServiceImpl(ImageRepository repository, SubtemaRepository subtemaRepository, SubtemaService subtemaService) {
         this.repository = repository;
-        this.subtemaRepository = subtemaRepository;
+        this.subtemaService = subtemaService;
     }
 
     @Override
@@ -24,10 +24,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void postURLSubtema(SubtemaImagenesRequest request) {
-        repository.save(SubtemaImagenes.
-                builder().
-                urlImage(request.url()).
-                subtema(subtemaRepository.getSubtemaById(request.idSubtema())).
-                build());
+        try {
+            repository.save(SubtemaImagenes.
+                    builder().
+                    urlImage(request.url()).
+                    subtema(subtemaService.getSubtema(request.idSubtema())).
+                    build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

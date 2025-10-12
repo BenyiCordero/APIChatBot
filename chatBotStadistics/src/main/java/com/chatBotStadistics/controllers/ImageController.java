@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/image")
 public class ImageController {
 
-    private final ImageService service;
+    private final ImageService imageService;
 
-    public ImageController(ImageService service) {
-        this.service = service;
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
     }
 
     @GetMapping
     public ResponseEntity<SubtemaImagenes> getURLImage(@PathVariable Integer id_subtema) {
-        return ResponseEntity.ok(service.getURLSubtema(id_subtema));
+        return ResponseEntity.ok(imageService.getURLSubtema(id_subtema));
     }
 
     @PostMapping
     public ResponseEntity<?> postURLImage(@RequestBody SubtemaImagenesRequest request) {
-        service.postURLSubtema(request);
+        imageService.postURLSubtema(request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
