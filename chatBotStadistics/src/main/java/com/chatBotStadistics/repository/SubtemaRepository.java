@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SubtemaRepository extends JpaRepository<Subtema, Integer> {
+    Subtema getSubtemaById(Integer id);
 }
