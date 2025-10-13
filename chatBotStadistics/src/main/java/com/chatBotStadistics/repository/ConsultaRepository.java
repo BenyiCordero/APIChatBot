@@ -38,13 +38,13 @@ import java.util.List;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
 
-    @Query("SELECT c.tema.nombre, COUNT(c) " +
+    @Query("SELECT c.subtema.tema.nombre, COUNT(c) " +
             "FROM Consulta c " +
-            "WHERE c.tema IS NOT NULL " +
+            "WHERE c.subtema.tema IS NOT NULL " +
             "  AND (:year IS NULL OR c.year = :year) " +
             "  AND (:month IS NULL OR c.month = :month) " +
             "  AND (:week IS NULL OR c.week = :week) " +
-            "GROUP BY c.tema.nombre")
+            "GROUP BY c.subtema.tema.nombre")
     List<Object[]> countConsultasByCategoria(@Param("year") Integer year,
                                              @Param("month") Integer month,
                                              @Param("week") Integer week);
@@ -56,10 +56,9 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
      * y Consulta tiene: @ManyToOne Tema tema;
      */
     @Query("SELECT s.nombre, COUNT(c) " +
-            "FROM Consulta c, Subtema s " +
-            "WHERE c.tema IS NOT NULL " +
-            "  AND s.tema = c.tema " +
-            "  AND (:year IS NULL OR c.year = :year) " +
+            "FROM Consulta c JOIN Subtema s " +
+            "WHERE  " +
+            "(:year IS NULL OR c.year = :year) " +
             "  AND (:month IS NULL OR c.month = :month) " +
             "  AND (:week IS NULL OR c.week = :week) " +
             "GROUP BY s.nombre")
