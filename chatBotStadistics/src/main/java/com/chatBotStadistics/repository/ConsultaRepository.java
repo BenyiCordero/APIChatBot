@@ -56,7 +56,7 @@ public interface ConsultaRepository extends JpaRepository<Consulta, Integer> {
      * y Consulta tiene: @ManyToOne Tema tema;
      */
     @Query("SELECT s.nombre, COUNT(c) " +
-            "FROM Consulta c JOIN Subtema s " +
+            "FROM Consulta c JOIN c.subtema s " +
             "WHERE  " +
             "(:year IS NULL OR c.year = :year) " +
             "  AND (:month IS NULL OR c.month = :month) " +
